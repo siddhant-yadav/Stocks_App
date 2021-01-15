@@ -10,7 +10,7 @@ def go_back(x):
     # now = datetime.now() # current date and time
     yrs = int(now.strftime("%Y")) - int(x/12)
     
-    if(int(now.strftime("%m")) > int(x%12)):
+    if(int(now.strftime("%m")) > int(x%12)):                          
         months = int(now.strftime("%m")) - int(x%12)
     else:
         months = int(now.strftime("%m")) - int(x%12) + 12
@@ -64,8 +64,8 @@ if(choice_data == "High_vs_Low"):
     data_H_L = pd.DataFrame({"High":tickerDf.High,"Low":tickerDf.Low})
     st.line_chart(data_H_L)
 
-    profit = pd.DataFrame(tickerDf.Close - tickerDf.Open)
-    st.area_chart(profit)
+    # profit = pd.DataFrame(tickerDf.Close - tickerDf.Open)
+    # st.area_chart(profit)
 
 
 
@@ -78,6 +78,8 @@ if(choice_data == "Profit A_vs_B"):
     profit1 = tickerDf.Close - tickerDf.Open
     profit2 = tickerDf2.Close - tickerDf2.Open
     
+    Data_comp = pd.DataFrame({f"{tickerSymbol}":(tickerDf.High + tickerDf.Low)/2,f"{tickerSymbol2}":(tickerDf2.High + tickerDf2.Low)/2})
+    st.line_chart(Data_comp)
 
     data_Close = pd.DataFrame({tickerSymbol: profit1,tickerSymbol2:profit2})
     st.line_chart(data_Close)
