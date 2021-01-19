@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd 
 import numpy as np 
 from datetime import datetime
+from PIL import Image
+import requests
 
 now = datetime.now() # current date and time
 
@@ -20,6 +22,15 @@ def go_back(x):
 
     string_date = f"{yrs}-{months}-{day}"
     return string_date
+
+#  st.markdown("""
+#  <style>.reportview-container {background: url("https://logo.clearbit.com/abc.xyz")ty5}.sidebar .sidebar-content {
+#         background: url("url_goes_here")
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 
 st.write("""
@@ -54,13 +65,22 @@ choice_data = st.radio('What Data do you need?',["High_vs_Low","Profit A_vs_B"])
 #get data on this ticker
 tickerData = yf.Ticker(tickerSymbol)
 #get the historical prices for this ticker
-tickerDf = tickerData.history(period='1d', start=From_date, end=today_date)
+tickerDf = tickerData.history(period='1m', start=From_date, end=today_date)
 # Open	High	Low	Close	Volume	Dividends	Stock Splits
 
-Dataframe2 = Dataframe[Dataframe['Ticker'] != tickerSymbol]
+# Dataframe2 = Dataframe[Dataframe['Ticker'] != tickerSymbol]
+Dataframe2 = Dataframe
+
 
 if(choice_data == "High_vs_Low"):
+    Info = tickerData.get_info()
+    image_url = Info['logo_url']
+    im = Image.open(requests.get(image_url, stream=True).raw)
+
+    st.image(im)
+
     st.write("This is",tickerSymbol)
+
     data_H_L = pd.DataFrame({"High":tickerDf.High,"Low":tickerDf.Low})
     st.line_chart(data_H_L)
 
@@ -69,11 +89,25 @@ if(choice_data == "High_vs_Low"):
 
 
 
+
+
 if(choice_data == "Profit A_vs_B"):
-    tickerSymbol2 = st.selectbox('Which Company Would you like to Analyse',Dataframe2)
+
+
+    tickerSymbol2 = st.selectbox('Which Company would you like to Analyse',Dataframe2)
     # tickerSymbol2 = 'AAPL'
     tickerData2 = yf.Ticker(tickerSymbol2)
-    tickerDf2 = tickerData2.history(period='1d', start=From_date, end=today_date)
+    tickerDf2 = tickerData2.history(period='1m', start=From_date, end=today_date)
+
+    Info = tickerData.get_info()
+    image_url = Info['logo_url']
+    im1 = Image.open(requests.get(image_url, stream=True).raw)
+    # st.image(im)
+
+    Info = tickerData2.get_info()
+    image_url = Info['logo_url']
+    im = Image.open(requests.get(image_url, stream=True).raw)
+    st.image([im1,im])
 
     profit1 = tickerDf.Close - tickerDf.Open
     profit2 = tickerDf2.Close - tickerDf2.Open
