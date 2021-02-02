@@ -41,7 +41,8 @@ Shown are the stock closing price and volume of Google!
 
 # https://towardsdatascience.com/how-to-get-stock-data-using-python-c0de1df17e75
 
-Dataframe = pd.read_csv('sp_500_stocks.csv')
+# Dataframe = pd.read_csv('sp_500_stocks.csv')
+Dataframe = pd.read_csv('yahoo_ticker.csv')
 tickerSymbol = st.selectbox('Which Company Would you like to Analyse',Dataframe)
 
 
