@@ -4,7 +4,6 @@ pandas==1.1.5
 yfinance>=0.1.55
 requests==2.25.1
 Pillow==8.1.0
-Python >= 2.7, 3.4+
 Numpy >= 1.11.1
 requests >= 2.14.2
 lxml >= 4.5.1
